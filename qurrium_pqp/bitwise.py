@@ -1,4 +1,4 @@
-"""Qurrium PQP Crossroads - The implementation of PQP on entropy (:mod:`qurrium_pqp.bitwise`)
+"""Post Processing - Classical Shadow - Bitwise Trace (:mod:`qurrium_pqp.bitwise`)
 
 This derived from the implementation of Hsin-Yuan Huang
 in `Predicting Properties of Quantum Many-Body Systems
@@ -13,9 +13,11 @@ All following functions can be found in the Python conversion.
 
 """
 
-from typing import Literal, Sequence
-import math
+from collections.abc import Sequence
+from enum import Enum
 import numpy as np
+
+from qurry.process.utils import BaseMethodEnum
 
 
 def count_trailing_zeros(n: int) -> int:
@@ -233,38 +235,25 @@ def calculate_term_per_encoding(
     )
 
 
-def clamp_purity(purity: float, subsystem_size: int, resolution: float = 1e-9) -> float:
-    """Clamp the purity value to be within the allowed range.
+def bitwise_core(
+    pauli_basis: list[list[int]], spin_outcome: list[list[int]], subsystem: list[int]
+) -> float:
+    """Calculate the purity of a quantum system using bitwise operations.
 
     Args:
-        purity (float): The purity value to clamp.
-        subsystem_size (int): The size of the subsystem.
-        resolution (float): The resolution for clamping.
-
-    Returns:
-        float: The clamped purity value.
-    """
-    min_purity = 1.0 / (2.0**subsystem_size)
-    max_purity = 1.0 - resolution
-    return max(min(purity, max_purity), min_purity)
-
-
-def predict_entropy(
-    subsystem: list[int],
-    pauli_basis: list[list[Literal[0, 1, 2]]],
-    spin_outcome: list[list[Literal[1, -1]]],
-) -> tuple[float, float, float]:
-    """Predict the purity and the entropy of a quantum system.
-
-    Args:
+        pauli_basis (list[list[int]]): The list of Pauli basis measurements. (X: 0, Y: 1, Z: 2)
+        spin_outcome (list[list[int]]): The list of spin outcomes. (1, -1)
         subsystem (list[int]): The subsystems.
-        pauli_basis (list[list[Literal[0, 1, 2]]]): The list of Pauli basis measurements.
-        spin_outcome (list[list[Literal[1, -1]]]): The list of spin outcomes.
 
     Returns:
-        tuple[float, float, float]:
-            The predicted purity, clamped purity, and entropy of the quantum system.
+        float: The purity by bitwise.
     """
+    if len(pauli_basis) != len(spin_outcome):
+        raise ValueError(
+            "Length mismatch: pauli_basis: "
+            + f"{len(pauli_basis)} != spin_outcome: {len(spin_outcome)}"
+        )
+
     subsystem_size = len(subsystem)
     max_encoding = 1 << (2 * subsystem_size)
     # Represent all possible comibinations of Pauli basis
@@ -321,10 +310,12 @@ def predict_entropy(
 
     # Calculate level counts with optimized version
     level_cnt, level_ttl = calculate_level_count(
-        max_encoding, subsystem_size, renyi_number_of_outcomes  # type: ignore
+        max_encoding,
+        subsystem_size,
+        renyi_number_of_outcomes,  # type: ignore
     )
 
-    predicted_purity = sum(
+    return sum(
         calculate_term_per_encoding(
             c,
             subsystem_size,
@@ -336,7 +327,32 @@ def predict_entropy(
         for c in range(max_encoding)
     )
 
-    clamped_purity = clamp_purity(predicted_purity, subsystem_size)
-    entropy = -math.log2(clamped_purity)
 
-    return predicted_purity, clamped_purity, entropy
+class BitWiseTraceMethod(BaseMethodEnum, Enum):
+    """The method to use for the trace calculation without matrix multiplication.
+
+    - "bitwise_py": Use pure Python bitwise implementation.
+
+    The default method is "bitwise_py", which is the fastest option.
+    """
+
+    BITWISE_PY = "bitwise_py"
+    """Use pure Python bitwise implementation."""
+    # BITWISE_RUST = "bitwise_rust"
+    # """Use Rust implementation via PyO3."""
+
+    @classmethod
+    def get_default(cls) -> "BitWiseTraceMethod":
+        """Get the default method for the trace calculation without matrix multiplication.
+
+        Returns:
+            BitWiseTraceMethod: The default method.
+        """
+        return cls.BITWISE_PY
+
+
+BitWiseTraceMethodType = BitWiseTraceMethod | str
+"""The method to use for the trace calculation with bitwise operations."""
+
+DEFAULT_BITWISE_TRACE_METHOD: BitWiseTraceMethod = BitWiseTraceMethod.get_default()
+"""The default method for the trace calculation with bitwise operations."""
