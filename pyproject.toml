@@ -5,6 +5,7 @@ build-backend = "maturin"
 [project]
 name = "qurrium_pqp"
 description = "Qurrium PQP Crossroads - The Converter Between Qurrium and The code implementation of the paper Predicting Properties of Quantum Many-Body Systems"
+version = "0.2.0"
 authors = [{ name = "Huai-Chung Chang", email = "harui2019@proton.me" }]
 license = { file = "LICENSE" }
 readme = "README.md"
@@ -14,13 +15,75 @@ classifiers = [
     "Programming Language :: Python :: Implementation :: CPython",
     "Programming Language :: Python :: Implementation :: PyPy",
 ]
-dependencies = ["qurrium>=0.12.0"]
-dynamic = ["version"]
+# bodependencies = ["qurrium>=0.14.0"]
 
 [tool.maturin]
 features = ["pyo3/extension-module"]
-module-name = "qurrium_pqp.dismatmul_rust"
+module-name = "qurrium_pqp.boorust"
 
 [tool.black]
 line-length = 100
-target-version = ['py310', 'py311', 'py312', 'py313']
+target-version = ['py310', 'py311', 'py312', 'py313', 'py314']
+
+# Linter and Formatter Configuration
+# Pylint and Ruff are used for linting and formatting.
+# We keep Pylint for it still supports more rules than Ruff.
+[tool.pylint.format]
+max-line-length = 100
+
+[tool.pylint.design]
+max-parents = 10
+
+[tool.pylint.similarities]
+ignore-docstrings = true
+ignore-comments = true
+min-similarity-lines = 6
+
+[tool.pylint."messages control"]
+disable = [
+    "duplicate-code",                # R0801, Required further research
+    "too-many-instance-attributes",  # R0902
+    "too-few-public-methods",        # R0903
+    "too-many-public-methods",       # R0904
+    "too-many-branches",             # R0912
+    "too-many-arguments",            # R0913
+    "too-many-locals",               # R0914
+    "too-many-statements",           # R0915
+    "too-many-positional-arguments", # R0917
+    "too-many-nested-blocks",        # R1702
+]
+# Respecting command line options of pylint
+# This will be useful when you configure pylint in your IDE
+# pylint ./qurry
+# --max-line-length=100 --max-parents=10
+# --ignore-docstrings --ignore-comments --min-similarity-lines=6
+# --disable=R0801,R0902,R0903,R0904,R0912,R0913,R0914,R0915,R0917,R1702
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+# We only support Python 3.10+, this is the minimum version.
+# This will need to be updated when we start to support Python 3.10+ specific syntax.
+
+lint.select = [
+    "E4",
+    "E7",
+    "E9", # pycodestyle errors
+    "F",  # Pyflakes
+]
+lint.ignore = ["F401", "E203", "W291", "F841"]
+
+[tool.ruff.lint.per-file-ignores]
+# "**/{tests,docs,tools}/*" = ["E402"]
+"__init__.py" = ["E402", "F401"]
+# module level import of this package need before boorust setup
+"qurry/process/utils/dummy.py" = ["E731"]
+# The only file allows lambda assignment for a specific function
+
+# Respecting command line options of ruff
+# This will be useful when you configure ruff in your IDE
+# ruff check 
+# --line-length=100 --target-version=py310 --select=E4,E7,E9,F 
+# --ignore=F401,E203,W291,F841 ./qurry
+# Or with format:
+# ruff format --line-length=100 ./qurry
