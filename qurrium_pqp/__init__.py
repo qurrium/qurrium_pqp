@@ -10,5 +10,5 @@ from .utils import (
     measurements_export,
     measurements_read,
     get_qurrium_version_info,
-    QURRIUM_VERSION
+    QURRIUM_VERSION,
 )
