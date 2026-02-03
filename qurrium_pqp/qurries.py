@@ -1,5 +1,4 @@
-"""Qurrium PQP Crossroads - Classical Shadow Conversion Module
-(:mod:`qurrium_pqp.classical_shadow`)
+"""Qurrium PQP Crossroads - Qurrium Implementation Conversion (:mod:`qurrium_pqp.qurries`)
 
 This module provides functions to transform
 the output of Qurrium to the text file format in
