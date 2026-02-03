@@ -70,3 +70,7 @@ docs/_build/
 
 # Pyenv
 .python-version
+
+# Test logs and export folders
+tests/exports/
+tests/logs/
