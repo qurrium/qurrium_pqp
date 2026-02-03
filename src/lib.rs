@@ -2,7 +2,7 @@ use pyo3::prelude::*;
 
 /// A Python module implemented in Rust.
 #[pymodule]
-fn boorust(m: &Bound<'_, PyModule>) -> PyResult<()> {
+fn boorust(_m: &Bound<'_, PyModule>) -> PyResult<()> {
     Ok(())
 }
 
