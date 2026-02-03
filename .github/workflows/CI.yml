@@ -172,6 +172,8 @@ jobs:
       attestations: write
     steps:
       - uses: actions/download-artifact@v6
+      - name: Display structure of downloaded files
+        run: ls -R
       - name: Generate artifact attestation
         uses: actions/attest-build-provenance@v3
         with:
@@ -191,3 +193,4 @@ jobs:
           tag_name: ${{ github.ref_name }}
           name: ${{ github.ref_name }}
           generate_release_notes: true
+          files: 'dist'
