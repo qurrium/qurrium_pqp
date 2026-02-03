@@ -1,4 +1,5 @@
-"""Post Processing - Classical Shadow - Bitwise Trace (:mod:`qurrium_pqp.bitwise`)
+"""Qurrium PQP Crossroads - Post Processing - Classical Shadow - Trace Process - Bitwise
+(:mod:`qurrium_pqp.process.classical_shadow.trace_process.bitwise`)
 
 This derived from the implementation of Hsin-Yuan Huang
 in `Predicting Properties of Quantum Many-Body Systems
@@ -14,7 +15,6 @@ All following functions can be found in the Python conversion.
 """
 
 from collections.abc import Sequence
-from enum import Enum
 import numpy as np
 
 from qurry.process.utils import BaseMethodEnum
@@ -235,7 +235,7 @@ def calculate_term_per_encoding(
     )
 
 
-def bitwise_core(
+def bitwise_py_core(
     pauli_basis: list[list[int]], spin_outcome: list[list[int]], subsystem: list[int]
 ) -> float:
     """Calculate the purity of a quantum system using bitwise operations.
@@ -328,7 +328,7 @@ def bitwise_core(
     )
 
 
-class BitWiseTraceMethod(BaseMethodEnum, Enum):
+class BitWiseTraceMethod(BaseMethodEnum):
     """The method to use for the trace calculation without matrix multiplication.
 
     - "bitwise_py": Use pure Python bitwise implementation.
