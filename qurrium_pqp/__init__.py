@@ -4,7 +4,7 @@ Predicting Properties of Quantum Many-Body Systems
 """
 
 from .qurries import qurrium_to_pqp_result, pqp_result_to_qurrium
-from .process import (
+from .process.classical_shadow import (
     bitwise_py_core,
     BitWiseTraceMethod,
     BitWiseTraceMethodType,
