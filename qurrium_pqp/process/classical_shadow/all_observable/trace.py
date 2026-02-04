@@ -1,11 +1,10 @@
-"""Qurrium PQP Crossroads - Post Processing - Classical Shadow - Trace of Rho Square
-(:mod:`qurrium_pqp.process.classical_shadow.trace`)
+"""Post Processing - Classical Shadow - All Observable Calculation - Trace of Rho Square
+(:mod:`qurrium_pqp.process.classical_shadow.all_observable.trace`)
 """
 
 from typing import Literal
 from collections.abc import Iterable
 import tqdm
-
 
 from qurry.process.classical_shadow import (
     RhoMethodType,

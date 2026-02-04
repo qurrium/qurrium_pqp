@@ -1,5 +1,6 @@
-"""Qurrium PQP Crossroads - Post Processing - Classical Shadow - Container/Purity Value Kind
-(:mod:`qurrium_pqp.process.classical_shadow.container_kind`)
+"""Post Processing - Classical Shadow - All Observable Calculation - Container/Purity Value Kind
+(:mod:`qurrium_pqp.process.classical_shadow.all_observable.container_kind`)
+
 """
 
 from typing import Literal

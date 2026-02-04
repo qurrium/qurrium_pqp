@@ -1,5 +1,6 @@
-"""Qurrium PQP Crossroads - Post Processing - Classical Shadow - Complex of All Variables
-(:mod:`qurrium_pqp.process.classical_shadow.complex`)
+"""Post Processing - Classical Shadow - All Observable Calculation - Complex of All Calculations
+(:mod:`qurrium_pqp.process.classical_shadow.all_observable.complex`)
+
 """
 
 from typing import Literal
