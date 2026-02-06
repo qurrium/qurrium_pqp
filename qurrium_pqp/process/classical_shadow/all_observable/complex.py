@@ -21,13 +21,13 @@ from qurry.process.classical_shadow import (
     ShadowBasisType,
     DEFAULT_SHADOW_BASIS,
     ClassicalShadowBasic,
-    ClassicalShadowPurity,
 )
 from qurry.process.classical_shadow.classical_shadow.estimation import (
     inner_estimation_of_given_operators,
 )
 
 from .trace import inner_trace_rho_square_extend
+from .container_kind import ClassicalShadowPurityExtend
 from ..trace_process import TraceMethodExtendType
 
 
@@ -46,7 +46,7 @@ def classical_shadow_complex_extend(
     trace_method: TraceMethodExtendType = DEFAULT_TRACE_METHOD,
     estimate_trace_method: ListTraceMethodType = DEFAULT_LIST_TRACE_METHOD,
     pbar: tqdm.tqdm | None = None,
-) -> tuple[ClassicalShadowBasic, ClassicalShadowPurity | None, EstimationOfObservable | None]:
+) -> tuple[ClassicalShadowBasic, ClassicalShadowPurityExtend | None, EstimationOfObservable | None]:
     r"""Calculate the expectation value of Rho and the purity by classical shadow.
 
     Reference:
@@ -243,7 +243,7 @@ def classical_shadow_complex_extend(
             The progress bar. Defaults to None.
 
     Returns:
-        A tuple of ClassicalShadowBasic, optional ClassicalShadowPurity, and
+        A tuple of ClassicalShadowBasic, optional ClassicalShadowPurityExtend, and
         optional EstimationOfObservable.
     """
 

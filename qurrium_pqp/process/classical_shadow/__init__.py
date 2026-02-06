@@ -103,6 +103,7 @@ from .all_observable import (
     classical_shadow_complex_extend,
     verify_purity_value_kind_extend,
     default_method_on_value_kind_extend,
+    ClassicalShadowPurityExtend,
     PurityValueKindExtend,
 )
 
@@ -114,7 +115,7 @@ from qurry.process.classical_shadow.utils import (
 )
 
 
-__export__ = [
+__all__ = [
     "bitwise_py_core",
     "BitWiseTraceMethod",
     "BitWiseTraceMethodType",

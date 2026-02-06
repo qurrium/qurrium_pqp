@@ -14,13 +14,12 @@ from qurry.process.classical_shadow import (
     ShadowBasisType,
     DEFAULT_SHADOW_BASIS,
     ClassicalShadowBasic,
-    ClassicalShadowPurity,
 )
 from qurry.process.classical_shadow.classical_shadow.container_kind import (
     isvalid_classical_shadow_basic,
 )
 
-from .container_kind import verify_purity_value_kind_extend
+from .container_kind import verify_purity_value_kind_extend, ClassicalShadowPurityExtend
 from ..trace_process import all_trace_core_extend, TraceMethodExtendType
 
 
@@ -30,7 +29,7 @@ def inner_trace_rho_square_extend(
     random_basis_array: list[list[Literal[0, 1, 2] | int]],
     cs_basic: ClassicalShadowBasic,
     trace_method: TraceMethodExtendType = DEFAULT_TRACE_METHOD,
-) -> ClassicalShadowPurity:
+) -> ClassicalShadowPurityExtend:
     """Calculate the trace of Rho square from ClassicalShadowBasic.
 
     Args:
@@ -48,7 +47,7 @@ def inner_trace_rho_square_extend(
             The method to calculate the trace of rho. Defaults to DEFAULT_TRACE_METHOD.
 
     Returns:
-        ClassicalShadowPurity: The ClassicalShadowPurity TypedDict object.
+        The ClassicalShadowPurityExtend TypedDict object.
     """
     isvalid_classical_shadow_basic(cs_basic)
     if len(counts) < 2:
@@ -66,10 +65,10 @@ def inner_trace_rho_square_extend(
         trace_method=trace_method,
     )
 
-    return ClassicalShadowPurity(
+    return ClassicalShadowPurityExtend(
         purity=purity,
         entropy=entropy,
-        trace_method=str(trace_method),
+        trace_method=trace_method,
         taking_time=taken,
         purity_value_kind=verify_purity_value_kind_extend(cs_basic["rho_method"], trace_method),
     )
@@ -84,7 +83,7 @@ def trace_rho_square_extend(
     shadow_basis: ShadowBasisType = DEFAULT_SHADOW_BASIS,
     trace_method: TraceMethodExtendType = DEFAULT_TRACE_METHOD,
     pbar: tqdm.tqdm | None = None,
-) -> tuple[ClassicalShadowBasic, ClassicalShadowPurity]:
+) -> tuple[ClassicalShadowBasic, ClassicalShadowPurityExtend]:
     r"""Trace of Rho square.
 
     Args:
@@ -171,7 +170,7 @@ def trace_rho_square_extend(
             The progress bar. Defaults to None.
 
     Returns:
-        A tuple of ClassicalShadowBasic and ClassicalShadowPurity.
+        A tuple of ClassicalShadowBasic and ClassicalShadowPurityExtend.
     """
 
     cs_basic_obj = mean_rho(

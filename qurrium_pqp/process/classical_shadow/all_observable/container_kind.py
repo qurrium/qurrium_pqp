@@ -3,8 +3,9 @@
 
 """
 
-from typing import Literal
+from typing import Literal, TypedDict
 
+from qurry.process.utils import FloatType
 from qurry.process.classical_shadow import (
     RhoMethod,
     RhoMethodType,
@@ -174,3 +175,22 @@ def default_method_on_value_kind_extend(
     if value_kind == "bitwise":
         return RhoMethod.get_default(), BitWiseTraceMethod.get_default()
     return default_method_on_value_kind(value_kind)
+
+
+class ClassicalShadowPurityExtend(TypedDict):
+    """The expectation value of Rho."""
+
+    purity: FloatType
+    """The purity calculated by classical shadow."""
+    entropy: FloatType
+    """The entropy calculated by classical shadow."""
+    purity_value_kind: PurityValueKind | str
+    """The kind of purity value calculation.
+    This will depend on the rho_method and trace_method.
+
+    If it is not one of the defined kinds, it will be "unknown".
+    """
+    taking_time: float
+    """The time taken for the calculation."""
+    trace_method: TraceMethodExtendType
+    """The method to calculate the trace of rho."""

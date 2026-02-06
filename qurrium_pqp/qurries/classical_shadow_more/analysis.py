@@ -31,13 +31,13 @@ from qurry.process.classical_shadow import (
     DEFAULT_LIST_TRACE_METHOD,
     PurityValueKind,
     ClassicalShadowBasic,
-    ClassicalShadowPurity,
     EstimationOfObservable,
 )
 
 from ...process.classical_shadow import (
     BitWiseTraceMethod,
     TraceMethodExtendType,
+    ClassicalShadowPurityExtend,
     handle_trace_method_extend,
     classical_shadow_complex_extend,
 )
@@ -411,7 +411,9 @@ class SUMAnalysis(
         shadow_basis: ShadowBasisType,
         trace_method: TraceMethodExtendType,
         estimate_trace_method: ListTraceMethodType,
-    ) -> tuple[ClassicalShadowBasic, ClassicalShadowPurity | None, EstimationOfObservable | None]:
+    ) -> tuple[
+        ClassicalShadowBasic, ClassicalShadowPurityExtend | None, EstimationOfObservable | None
+    ]:
         r"""Calculate the classical shadow quantities.
 
         Args:
@@ -518,7 +520,8 @@ class SUMAnalysis(
                 Defaults to DEFAULT_LIST_TRACE_METHOD.
 
         Returns:
-            ClassicalShadowComplex: The result of the classical shadow.
+            A tuple of ClassicalShadowBasic, optional ClassicalShadowPurityExtend, and
+            optional EstimationOfObservable.
         """
 
         return classical_shadow_complex_extend(

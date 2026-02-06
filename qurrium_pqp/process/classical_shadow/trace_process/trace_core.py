@@ -65,19 +65,21 @@ def handle_trace_method_extend(
         TraceMethod | BitWiseTraceMethod:
             The trace method.
     """
-    if isinstance(trace_method, str):
-        try:
-            return BitWiseTraceMethod.from_string(trace_method)
-        except ValueError:
-            return TraceMethod.from_string(trace_method)
+    if isinstance(trace_method, (TraceMethod, BitWiseTraceMethod)):
+        return trace_method
 
-    if not isinstance(trace_method, (TraceMethod, BitWiseTraceMethod)):
-        raise ValueError(
-            f"Invalid trace method: {trace_method}. Supported methods are: "
-            + ", ".join(TraceMethod.get_all_methods() + BitWiseTraceMethod.get_all_methods())
-        )
+    for method in BitWiseTraceMethod:
+        if trace_method == method.value:
+            return method
+    for method in TraceMethod:
+        if trace_method == method.value:
+            return method
 
-    return trace_method
+    raise ValueError(
+        "Unknown trace method: "
+        + f"'{trace_method}'. Supported methods are: "
+        + ", ".join(BitWiseTraceMethod.get_all_methods() + TraceMethod.get_all_methods())
+    )
 
 
 def all_trace_core_extend(
