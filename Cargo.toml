@@ -9,6 +9,6 @@ name = "qurrium_pqp"
 crate-type = ["cdylib"]
 
 [dependencies]
-pyo3 = { version = "0.28.0", features = ["abi3"] }
+pyo3 = { version = "0.28.0", features = ["abi3-py310"] }
 rayon = "1.11.0"
 indicatif = { version = "0.17", features = ["rayon"] }
